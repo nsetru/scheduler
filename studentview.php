@@ -233,11 +233,23 @@ if ($slots = scheduler_get_available_slots($USER->id, $scheduler->id, true)) {
             $endtimestr = $endtime;
         }
         $location = s($aSlot->appointmentlocation);
+        //-- ucl hack begin --
+        //https://svn.ucl.ac.uk/projects/isd/moodle26/ticket/28 Scheduler Plugin - get additional html to add
+        $locationrow = '';
+        require_once(__DIR__.'/../../local/scheduler_extension/lib.php');
+        $locationrow = scheduler_extension_getlocationrow($aSlot->schedulerid, $aSlot->id, $location);
+        //-- ucl hack end --
         if ($aSlot->appointedbyme and !$aSlot->attended){
             $teacher = $DB->get_record('user', array('id'=>$aSlot->teacherid));
             $radio = "<input type=\"radio\" name=\"slotid\" value=\"{$aSlot->id}\" checked=\"checked\" />\n";
-            $table->data[] = array ("<b>$startdatestr</b>", "<b>$starttime</b>", "<b>$endtime</b>", "<b>$location</b>",
-            	$radio, "<b>"."<a href=\"../../user/view.php?id={$aSlot->teacherid}&amp;course=$scheduler->course\">".fullname($teacher).'</a></b>','<b>'.$aSlot->groupsession.'</b>');
+
+            //-- ucl hack begin --
+            //https://svn.ucl.ac.uk/projects/isd/moodle26/ticket/28 Scheduler Plugin - add $locationrow as additional html
+            /*$table->data[] = array ("<b>$startdatestr</b>", "<b>$starttime</b>", "<b>$endtime</b>", "<b>$location</b>",
+            	$radio, "<b>"."<a href=\"../../user/view.php?id={$aSlot->teacherid}&amp;course=$scheduler->course\">".fullname($teacher).'</a></b>','<b>'.$aSlot->groupsession.'</b>');*/
+            $table->data[] = array ("<b>$startdatestr</b>", "<b>$starttime</b>", "<b>$endtime</b>", "<b>$locationrow</b>",
+                                    $radio, "<b>"."<a href=\"../../user/view.php?id={$aSlot->teacherid}&amp;course=$scheduler->course\">".fullname($teacher).'</a></b>','<b>'.$aSlot->groupsession.'</b>');
+            //-- ucl hack end --
         } else {
             if ($aSlot->appointed and has_capability('mod/scheduler:seeotherstudentsbooking', $context)){
                 $appointments = scheduler_get_appointments($aSlot->id);
@@ -255,8 +267,13 @@ if ($slots = scheduler_get_available_slots($USER->id, $scheduler->id, true)) {
             $canusegroup = ($aSlot->appointed) ? 0 : 1;
             $radio = "<input type=\"radio\" name=\"slotid\" value=\"{$aSlot->id}\" onclick=\"checkGroupAppointment($canusegroup)\" />\n";
             $teacher = $DB->get_record('user', array('id'=>$aSlot->teacherid));
-            $table->data[] = array ($startdatestr, $starttimestr, $endtimestr, $location,
-            	$radio, "<a href=\"../../user/view.php?id={$aSlot->teacherid}&amp;course={$scheduler->course}\">".fullname($teacher).'</a>', $aSlot->groupsession);
+            //-- ucl hack begin --
+            //https://svn.ucl.ac.uk/projects/isd/moodle26/ticket/28 Scheduler Plugin - add $locationrow as additional html
+            /*$table->data[] = array ($startdatestr, $starttimestr, $endtimestr, $location,
+            	$radio, "<a href=\"../../user/view.php?id={$aSlot->teacherid}&amp;course={$scheduler->course}\">".fullname($teacher).'</a>', $aSlot->groupsession);*/
+            $table->data[] = array ($startdatestr, $starttimestr, $endtimestr, $locationrow,
+                                    $radio, "<a href=\"../../user/view.php?id={$aSlot->teacherid}&amp;course={$scheduler->course}\">".fullname($teacher).'</a>', $aSlot->groupsession);
+            // -- ucl hack end --
         }
         $previoustime = $starttime;
         $previousendtime = $endtime;
