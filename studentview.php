@@ -297,7 +297,21 @@ if ($slots = scheduler_get_available_slots($USER->id, $scheduler->id, true)) {
                 }
             }
             document.forms['appoint'].elements['appointgroup'].disabled = !enable;
-        }    
+        }
+        //-- ucl hack begin --
+        // function to toggle DOM elements when 'editlocation' button is clicked
+        function editlocation(location,slotid){
+            var location = location;
+            var slotid = slotid;
+
+            obj1 = document.getElementById('editlocation' + slotid);
+            obj2 = document.getElementById('savelocation' + slotid);
+
+            obj1.style.display = 'none';
+            obj2.style.display = 'block';
+        }
+        //-- ucl hack end --
+
         </script>
 <?php
 echo html_writer::table($table);
