@@ -300,7 +300,7 @@ if ($slots = scheduler_get_available_slots($USER->id, $scheduler->id, true)) {
         }
         //-- ucl hack begin --
         // function to toggle DOM elements when 'editlocation' button is clicked
-        function editlocation(location,slotid){
+        /*function editlocation(location,slotid){
             var location = location;
             var slotid = slotid;
 
@@ -309,7 +309,8 @@ if ($slots = scheduler_get_available_slots($USER->id, $scheduler->id, true)) {
 
             obj1.style.display = 'none';
             obj2.style.display = 'block';
-        }
+            image.style.visibility = 'hidden';
+        }*/
         //-- ucl hack end --
 
         </script>

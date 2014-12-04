@@ -21,6 +21,10 @@ if ($action == 'savechoice') {
     $slotid = optional_param('slotid', '', PARAM_INT);
     $appointgroup = optional_param('appointgroup', 0, PARAM_INT);
     // $notes = optional_param('notes', '', PARAM_TEXT);
+    //-- ucl hack begin --
+    $newlocation = optional_param('newlocaion', '', PARAM_TEXT);
+    $locationslotid = optional_param('locationslotid', '', PARAM_INT);
+    //-- ucl hack end --
     
     if (!$slotid) {
         notice(get_string('notselected', 'scheduler'), "view.php?id={$cm->id}");
